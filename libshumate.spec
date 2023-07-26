@@ -1,13 +1,13 @@
 #
 # Conditional build:
 %bcond_without	apidocs		# API docs
-%bcond_with	libsoup3	# libsoup3 instead of libsoup 2.x
+%bcond_with	libsoup2	# libsoup2 instead of libsoup3 (must match libgweather4)
 
 Summary:	Map widget for GTK 4
 Summary(pl.UTF-8):	Widżet mapy dla GTK 4
 Name:		libshumate
 Version:	1.0.5
-Release:	1
+Release:	2
 License:	LGPL v2.1+
 Group:		X11/Libraries
 Source0:	https://download.gnome.org/sources/libshumate/1.0/%{name}-%{version}.tar.xz
@@ -21,8 +21,8 @@ BuildRequires:	gtk4-devel >= 4
 BuildRequires:	json-glib-devel >= 1.6
 BuildRequires:	meson >= 0.53.0
 BuildRequires:	ninja >= 1.5
-%{!?with_libsoup3:BuildRequires:	libsoup-devel >= 2.42}
-%{?with_libsoup3:BuildRequires:	libsoup3-devel >= 3.0}
+%{?with_libsoup2:BuildRequires:	libsoup-devel >= 2.42}
+%{!?with_libsoup2:BuildRequires:	libsoup3-devel >= 3.0}
 BuildRequires:	rpmbuild(macros) >= 1.736
 BuildRequires:	sqlite3-devel >= 3.0
 BuildRequires:	vala >= 0.11.0
@@ -31,8 +31,8 @@ BuildRequires:	xz
 Requires:	cairo >= 1.4
 Requires:	glib2 >= 1:2.68.0
 Requires:	json-glib >= 1.6
-%{!?with_libsoup3:Requires:	libsoup >= 2.42}
-%{?with_libsoup3:Requires:	libsoup3 >= 3.0}
+%{?with_libsoup2:Requires:	libsoup >= 2.42}
+%{!?with_libsoup2:Requires:	libsoup3 >= 3.0}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -49,8 +49,8 @@ Requires:	%{name} = %{version}-%{release}
 Requires:	cairo-devel >= 1.4
 Requires:	glib2-devel >= 1:2.68.0
 Requires:	gtk4-devel >= 4
-%{!?with_libsoup3:Requires:	libsoup-devel >= 2.42}
-%{?with_libsoup3:Requires:	libsoup3-devel >= 3.0}
+%{?with_libsoup2:Requires:	libsoup-devel >= 2.42}
+%{!?with_libsoup2:Requires:	libsoup3-devel >= 3.0}
 Requires:	sqlite3-devel >= 3.0
 
 %description devel
@@ -104,7 +104,7 @@ API libshumate dla języka Vala.
 %build
 %meson build \
 	%{!?with_apidocs:-Dgtk_doc=false} \
-	%{!?with_libsoup3:-Dlibsoup3=false}
+	%{?with_libsoup2:-Dlibsoup3=false}
 
 %ninja_build -C build
 
