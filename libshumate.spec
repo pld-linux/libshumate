@@ -1,6 +1,6 @@
 #
 # Conditional build:
-%bcond_without	apidocs		# API docs
+%bcond_without	apidocs		# API documentation
 %bcond_with	libsoup2	# libsoup2 instead of libsoup3 (must match libgweather4)
 
 Summary:	Map widget for GTK 4
@@ -23,7 +23,7 @@ BuildRequires:	meson >= 0.53.0
 BuildRequires:	ninja >= 1.5
 %{?with_libsoup2:BuildRequires:	libsoup-devel >= 2.42}
 %{!?with_libsoup2:BuildRequires:	libsoup3-devel >= 3.0}
-BuildRequires:	rpmbuild(macros) >= 1.736
+BuildRequires:	rpmbuild(macros) >= 2.029
 BuildRequires:	sqlite3-devel >= 3.0
 BuildRequires:	vala >= 0.11.0
 BuildRequires:	tar >= 1:1.22
@@ -75,7 +75,6 @@ Statyczne biblioteki libshumate.
 Summary:	libshumate API documentation
 Summary(pl.UTF-8):	Dokumentacja API biblioteki libshumate
 Group:		Documentation
-Requires:	gtk-doc-common
 BuildArch:	noarch
 
 %description apidocs
@@ -114,9 +113,8 @@ rm -rf $RPM_BUILD_ROOT
 %ninja_install -C build
 
 %if %{with apidocs}
-# FIXME: where to package gi-docgen generated docs?
-install -d $RPM_BUILD_ROOT%{_gtkdocdir}
-%{__mv} $RPM_BUILD_ROOT%{_docdir}/libshumate-1.0 $RPM_BUILD_ROOT%{_gtkdocdir}
+install -d $RPM_BUILD_ROOT%{_gidocdir}
+%{__mv} $RPM_BUILD_ROOT%{_docdir}/libshumate-1.0 $RPM_BUILD_ROOT%{_gidocdir}
 %endif
 
 # not supported by glibc (as of 2.38)
@@ -151,7 +149,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with apidocs}
 %files apidocs
 %defattr(644,root,root,755)
-%{_gtkdocdir}/libshumate-1.0
+%{_gidocdir}/libshumate-1.0
 %endif
 
 %files -n vala-libshumate
