@@ -1,38 +1,37 @@
 #
 # Conditional build:
 %bcond_without	apidocs		# API documentation
-%bcond_with	libsoup2	# libsoup2 instead of libsoup3 (must match libgweather4)
 
 Summary:	Map widget for GTK 4
 Summary(pl.UTF-8):	Widżet mapy dla GTK 4
 Name:		libshumate
-Version:	1.1.3
+Version:	1.2.0
 Release:	1
 License:	LGPL v2.1+
 Group:		X11/Libraries
-Source0:	https://download.gnome.org/sources/libshumate/1.1/%{name}-%{version}.tar.xz
-# Source0-md5:	64c9ec76c3b1b073aa4130c081eabbba
+Source0:	https://download.gnome.org/sources/libshumate/1.2/%{name}-%{version}.tar.xz
+# Source0-md5:	eb39d4dac6eafc7b685bda90b5113384
 URL:		https://wiki.gnome.org/Projects/libshumate
 BuildRequires:	cairo-devel >= 1.4
 %{?with_apidocs:BuildRequires:	gi-docgen >= 2021.1}
-BuildRequires:	glib2-devel >= 1:2.68.0
+BuildRequires:	glib2-devel >= 1:2.74.0
 BuildRequires:	gobject-introspection-devel >= 0.6.3
 BuildRequires:	gtk4-devel >= 4
 BuildRequires:	json-glib-devel >= 1.6
-BuildRequires:	meson >= 0.53.0
+BuildRequires:	meson >= 0.55.0
 BuildRequires:	ninja >= 1.5
-%{?with_libsoup2:BuildRequires:	libsoup-devel >= 2.42}
-%{!?with_libsoup2:BuildRequires:	libsoup3-devel >= 3.0}
+BuildRequires:	libsoup3-devel >= 3.0
+BuildRequires:	protobuf-c-devel
 BuildRequires:	rpmbuild(macros) >= 2.029
 BuildRequires:	sqlite3-devel >= 3.0
-BuildRequires:	vala >= 0.11.0
+BuildRequires:	sysprof-devel >= 3.38
 BuildRequires:	tar >= 1:1.22
+BuildRequires:	vala >= 0.11.0
 BuildRequires:	xz
 Requires:	cairo >= 1.4
-Requires:	glib2 >= 1:2.68.0
+Requires:	glib2 >= 1:2.74.0
 Requires:	json-glib >= 1.6
-%{?with_libsoup2:Requires:	libsoup >= 2.42}
-%{!?with_libsoup2:Requires:	libsoup3 >= 3.0}
+Requires:	libsoup3 >= 3.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -47,11 +46,13 @@ Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki libshumate
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	cairo-devel >= 1.4
-Requires:	glib2-devel >= 1:2.68.0
+Requires:	glib2-devel >= 1:2.74.0
 Requires:	gtk4-devel >= 4
-%{?with_libsoup2:Requires:	libsoup-devel >= 2.42}
-%{!?with_libsoup2:Requires:	libsoup3-devel >= 3.0}
+Requires:	json-glib-devel >= 1.6
+Requires:	libsoup3-devel >= 3.0
+Requires:	protobuf-c-devel
 Requires:	sqlite3-devel >= 3.0
+Requires:	sysprof-devel >= 3.38
 
 %description devel
 Header files for the libshumate library.
@@ -102,8 +103,7 @@ API libshumate dla języka Vala.
 
 %build
 %meson build \
-	%{!?with_apidocs:-Dgtk_doc=false} \
-	%{?with_libsoup2:-Dlibsoup3=false}
+	%{!?with_apidocs:-Dgtk_doc=false}
 
 %ninja_build -C build
 
