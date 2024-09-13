@@ -1,16 +1,17 @@
 #
 # Conditional build:
 %bcond_without	apidocs		# API documentation
+%bcond_without	sysprof		# sysprof profiling
 
 Summary:	Map widget for GTK 4
 Summary(pl.UTF-8):	Widżet mapy dla GTK 4
 Name:		libshumate
-Version:	1.2.3
+Version:	1.3.0
 Release:	1
 License:	LGPL v2.1+
 Group:		X11/Libraries
-Source0:	https://download.gnome.org/sources/libshumate/1.2/%{name}-%{version}.tar.xz
-# Source0-md5:	4b8919088922eac80b103b464d7c5b8b
+Source0:	https://download.gnome.org/sources/libshumate/1.3/%{name}-%{version}.tar.xz
+# Source0-md5:	aac8813bec6f2aa32112b968ed114360
 URL:		https://wiki.gnome.org/Projects/libshumate
 BuildRequires:	cairo-devel >= 1.4
 %{?with_apidocs:BuildRequires:	gi-docgen >= 2021.1}
@@ -24,7 +25,7 @@ BuildRequires:	libsoup3-devel >= 3.0
 BuildRequires:	protobuf-c-devel
 BuildRequires:	rpmbuild(macros) >= 2.029
 BuildRequires:	sqlite3-devel >= 3.0
-BuildRequires:	sysprof-devel >= 3.38
+%{?with_sysprof:BuildRequires:	sysprof-devel >= 3.38}
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	vala >= 0.11.0
 BuildRequires:	xz
@@ -52,7 +53,9 @@ Requires:	json-glib-devel >= 1.6
 Requires:	libsoup3-devel >= 3.0
 Requires:	protobuf-c-devel
 Requires:	sqlite3-devel >= 3.0
+%if %{with sysprof}
 Requires:	sysprof-devel >= 3.38
+%endif
 
 %description devel
 Header files for the libshumate library.
@@ -103,7 +106,8 @@ API libshumate dla języka Vala.
 
 %build
 %meson build \
-	%{!?with_apidocs:-Dgtk_doc=false}
+	%{!?with_apidocs:-Dgtk_doc=false} \
+	%{!?with_sysprof:-Dsysprof=disabled}
 
 %ninja_build -C build
 
