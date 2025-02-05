@@ -23,7 +23,7 @@ BuildRequires:	meson >= 0.55.0
 BuildRequires:	ninja >= 1.5
 BuildRequires:	libsoup3-devel >= 3.0
 BuildRequires:	protobuf-c-devel
-BuildRequires:	rpmbuild(macros) >= 2.029
+BuildRequires:	rpmbuild(macros) >= 2.042
 BuildRequires:	sqlite3-devel >= 3.0
 %{?with_sysprof:BuildRequires:	sysprof-devel >= 3.38}
 BuildRequires:	tar >= 1:1.22
@@ -105,16 +105,16 @@ API libshumate dla języka Vala.
 %setup -q
 
 %build
-%meson build \
+%meson \
 	%{!?with_apidocs:-Dgtk_doc=false} \
 	%{!?with_sysprof:-Dsysprof=disabled}
 
-%ninja_build -C build
+%meson_build
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%ninja_install -C build
+%meson_install
 
 %if %{with apidocs}
 install -d $RPM_BUILD_ROOT%{_gidocdir}
