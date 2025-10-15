@@ -6,12 +6,12 @@
 Summary:	Map widget for GTK 4
 Summary(pl.UTF-8):	Widżet mapy dla GTK 4
 Name:		libshumate
-Version:	1.5.0.1
+Version:	1.5.1
 Release:	1
 License:	LGPL v2.1+
 Group:		X11/Libraries
 Source0:	https://download.gnome.org/sources/libshumate/1.5/%{name}-%{version}.tar.xz
-# Source0-md5:	7a8fc8ce45d404955c0e039457f470ba
+# Source0-md5:	3de343eab8632017727f619b01505c7a
 URL:		https://gnome.pages.gitlab.gnome.org/libshumate/
 BuildRequires:	cairo-devel >= 1.4
 %{?with_apidocs:BuildRequires:	gi-docgen >= 2021.1}
